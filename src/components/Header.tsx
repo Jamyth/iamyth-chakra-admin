@@ -1,15 +1,15 @@
 import React from "react";
 import { Container, Box } from "@chakra-ui/react";
+import { SIDEBAR_WIDTH } from "../theme";
 
-export interface HeaderProps {
-    logo?: string;
-    logoText?: string;
-}
+export interface HeaderProps {}
 
-export const Header = React.memo(({}: HeaderProps) => {
+export const Header = React.memo((props: HeaderProps) => {
+    const maxWidth = window.innerWidth - SIDEBAR_WIDTH;
+
     return (
-        <Box as="header" borderTop="3px solid #2f2">
-            <Container height="50px" maxWidth={1624} display="flex" alignItems="center">
+        <Box as="header">
+            <Container height="50px" maxWidth={maxWidth} display="flex" alignItems="center">
                 hahahha
             </Container>
         </Box>

@@ -1,7 +1,7 @@
 import type React from "react";
 
 export interface RouteModule {
-    title: string;
+    name: string;
     subModules: SubModule[];
     icon?: React.ReactNode;
     isHidden?: boolean;

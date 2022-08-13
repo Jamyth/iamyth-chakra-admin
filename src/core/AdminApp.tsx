@@ -1,11 +1,12 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ChakraProvider } from "@chakra-ui/react";
+import { Box, ChakraProvider, Flex } from "@chakra-ui/react";
 import { Header } from "../components/Header";
+import { SideBar } from "../components/Sidebar";
 import type { RouteModule, SubModule } from "../type";
 
 export interface AdminAppWithReactRouterProps {
-    routeConfig: RouteModule[];
+    routeConfig: (RouteModule | SubModule)[];
 }
 
 export interface AdminAppWithoutReactRouterProps {
@@ -20,17 +21,25 @@ export function AdminApp(props: AdminAppWithReactRouterProps | AdminAppWithoutRe
 
     if ("routeConfig" in props) {
         const { routeConfig } = props;
-        const subModules = routeConfig.reduce((acc, curr) => [...acc, ...curr.subModules], [] as SubModule[]);
+        const subModules = routeConfig.reduce(
+            (acc, curr) => [...acc, ...("subModules" in curr ? curr.subModules : [curr])],
+            [] as SubModule[],
+        );
 
         return (
             <ChakraProvider>
                 <BrowserRouter>
-                    <Header />
-                    <Routes>
-                        {subModules.map(({ path, component: Component }, index) => {
-                            return <Route key={index} element={<Component />} path={path} />;
-                        })}
-                    </Routes>
+                    <Flex>
+                        <SideBar modules={routeConfig} />
+                        <Box>
+                            <Header />
+                            <Routes>
+                                {subModules.map(({ path, component: Component }, index) => {
+                                    return <Route key={index} element={<Component />} path={path} />;
+                                })}
+                            </Routes>
+                        </Box>
+                    </Flex>
                 </BrowserRouter>
             </ChakraProvider>
         );
