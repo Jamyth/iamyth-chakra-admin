@@ -25,13 +25,14 @@ export function AdminApp(props: AdminAppWithReactRouterProps | AdminAppWithoutRe
             (acc, curr) => [...acc, ...("subModules" in curr ? curr.subModules : [curr])],
             [] as SubModule[],
         );
+        const height = window.innerHeight;
 
         return (
             <ChakraProvider>
                 <BrowserRouter>
-                    <Flex>
+                    <Flex minHeight={height}>
                         <SideBar modules={routeConfig} />
-                        <Box>
+                        <Box flex="1">
                             <Header />
                             <Routes>
                                 {subModules.map(({ path, component: Component }, index) => {

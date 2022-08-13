@@ -11,27 +11,20 @@ const routeConfig: (RouteModule | SubModule)[] = [
             {
                 component: () => null,
                 path: "hahaha",
-                name: "Sub Module",
+                name: "Sub Module 1 ",
+                icon: "Test",
             },
             {
                 component: () => null,
                 path: "hahaha",
-                name: "Sub Module",
+                name: "Sub Module 2 ",
+                icon: "Test",
             },
             {
                 component: () => null,
                 path: "hahaha",
-                name: "Sub Module",
-            },
-            {
-                component: () => null,
-                path: "hahaha",
-                name: "Sub Module",
-            },
-            {
-                component: () => null,
-                path: "hahaha",
-                name: "Sub Module",
+                name: "Sub Module 3",
+                icon: "Test",
             },
         ],
     },
@@ -39,21 +32,25 @@ const routeConfig: (RouteModule | SubModule)[] = [
         path: "/",
         component: () => null,
         name: "Hello",
+        icon: "Test",
     },
     {
         path: "/",
         component: () => null,
         name: "Hello",
+        icon: "Test",
     },
     {
         path: "/",
         component: () => null,
         name: "Hello",
+        icon: "Test",
     },
     {
         path: "/",
         component: () => null,
         name: "Hello",
+        icon: "Test",
     },
 ];
 
