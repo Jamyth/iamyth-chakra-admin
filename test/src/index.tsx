@@ -29,10 +29,28 @@ const routeConfig: (RouteModule | SubModule)[] = [
         ],
     },
     {
-        path: "/",
-        component: () => null,
-        name: "Hello",
+        name: "Dashboard",
         icon: "Test",
+        subModules: [
+            {
+                component: () => null,
+                path: "hahaha",
+                name: "Sub Module 5 ",
+                icon: "Test",
+            },
+            {
+                component: () => null,
+                path: "hahaha",
+                name: "Sub Module 6 ",
+                icon: "Test",
+            },
+            {
+                component: () => null,
+                path: "hahaha",
+                name: "Sub Module 7",
+                icon: "Test",
+            },
+        ],
     },
     {
         path: "/",

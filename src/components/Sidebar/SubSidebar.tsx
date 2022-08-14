@@ -21,12 +21,13 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
     // Animating used to track when user fast double click the menu, it will breaks the animation
     const [isAnimating, setIsAnimating] = React.useState(false);
     const [isOpened, setIsOpened] = React.useState(false);
-    const [controlledSubModules, setControlledSubModules] = React.useState(routeModule);
+    const [controlledRouteModule, setControlledRouteModule] = React.useState(routeModule);
     const [container, setContainer] = React.useState<HTMLDivElement | null>(null);
+    const width = container?.scrollWidth;
 
     const onTransitionEnd = () => {
         if (!isOpened) {
-            setControlledSubModules(null);
+            setControlledRouteModule(null);
         }
     };
 
@@ -37,7 +38,8 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
         }
         if (routeModule !== null) {
             // We need to set the array first before triggering transition
-            setControlledSubModules(routeModule ?? []);
+            setControlledRouteModule(routeModule ?? []);
+            setIsAnimating(true);
         } else {
             setIsOpened(false);
         }
@@ -46,25 +48,28 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
     }, [routeModule]);
 
     React.useEffect(() => {
-        setIsOpened(controlledSubModules !== null);
-        setIsAnimating(true);
-    }, [controlledSubModules]);
+        // We need to set the route module state first
+        // so the dom will render the content, then trigger this side-effect
+        setIsOpened(controlledRouteModule !== null);
+    }, [controlledRouteModule]);
 
     return (
         <Flex
             ref={setContainer}
-            justifyContent="space-between"
-            maxWidth={isOpened ? `${container?.scrollWidth}px` : "0px"}
+            width={`${width}px`}
+            maxWidth={isOpened ? `${width}px` : "0px"}
             transition="all 0.3s ease-in-out"
             overflowX="hidden"
             onTransitionEnd={onTransitionEnd}
             backgroundColor="#06603b"
         >
-            <Box padding="15px">
+            <Flex flexDirection="column" justifyContent="space-between" padding="15px">
                 <Box whiteSpace="nowrap">
-                    {controlledSubModules?.subModules.map((_) => (
+                    <Box as="h2" color="#9CC9B7" paddingY="10px">
+                        {controlledRouteModule?.name}
+                    </Box>
+                    {controlledRouteModule?.subModules.map((_) => (
                         <Button
-                            display="block"
                             _hover={{
                                 backgroundColor: "#2A7857",
                                 color: "#91CEB5",
@@ -73,6 +78,7 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
                                 backgroundColor: "#2A7857",
                                 color: "#91CEB5",
                             }}
+                            display="block"
                             color="#9CC9B7"
                             variant="ghost"
                             key={_.name}
@@ -82,7 +88,8 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
                         </Button>
                     ))}
                 </Box>
-            </Box>
+                <Box>???</Box>
+            </Flex>
         </Flex>
     );
 });
