@@ -1,5 +1,6 @@
 import { Box, Flex, Button } from "@chakra-ui/react";
 import React from "react";
+import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import type { RouteModule } from "../../type";
 
 export interface Props {
@@ -16,19 +17,24 @@ export interface Props {
  * 1. starts the animation
  * 2. clear the cloned sub-modules
  */
-// TODO/Jamyth add subsidebar name
 export const SubSidebar = React.memo(({ routeModule }: Props) => {
     // Animating used to track when user fast double click the menu, it will breaks the animation
     const [isAnimating, setIsAnimating] = React.useState(false);
     const [isOpened, setIsOpened] = React.useState(false);
     const [controlledRouteModule, setControlledRouteModule] = React.useState(routeModule);
     const [container, setContainer] = React.useState<HTMLDivElement | null>(null);
+    const location = useLocation();
+    const navigate = useNavigate();
     const width = container?.scrollWidth;
 
     const onTransitionEnd = () => {
         if (!isOpened) {
             setControlledRouteModule(null);
         }
+    };
+
+    const isLocationMatched = (path: string) => {
+        return matchPath(path, location.pathname) !== null;
     };
 
     React.useEffect(() => {
@@ -70,6 +76,7 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
                     </Box>
                     {controlledRouteModule?.subModules.map((_) => (
                         <Button
+                            isActive={isLocationMatched(_.path)}
                             _hover={{
                                 backgroundColor: "#2A7857",
                                 color: "#91CEB5",
@@ -83,6 +90,7 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
                             variant="ghost"
                             key={_.name}
                             whiteSpace="nowrap"
+                            onClick={() => navigate(_.path)}
                         >
                             {_.name}
                         </Button>
