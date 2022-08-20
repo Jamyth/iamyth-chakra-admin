@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { SIDEBAR_WIDTH } from "../../theme";
 import { SubSidebar } from "./SubSidebar";
+import { RouteContext } from "../../context/RouteContext";
 import type { RouteModule, SubModule } from "../../type";
 
 export interface SidebarProps {
@@ -11,6 +12,7 @@ export interface SidebarProps {
 
 export const SideBar = React.memo(({ modules, logo }: SidebarProps) => {
     const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+    const { setCurrentModule } = React.useContext(RouteContext);
 
     const selectMenuItem = (index: number) => {
         setSelectedIndex((selectedIndex) => (selectedIndex === index ? null : index));
@@ -18,6 +20,16 @@ export const SideBar = React.memo(({ modules, logo }: SidebarProps) => {
 
     const indexedModule = selectedIndex !== null ? modules[selectedIndex] : null;
     const selectedModule = indexedModule && "subModules" in indexedModule ? indexedModule : null;
+
+    React.useEffect(() => {
+        if (indexedModule && !("subModules" in indexedModule)) {
+            setCurrentModule({
+                icon: indexedModule.icon,
+                moduleName: indexedModule.name,
+                routeName: null,
+            });
+        }
+    }, [indexedModule, setCurrentModule]);
 
     return (
         <React.Fragment>

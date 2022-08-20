@@ -1,7 +1,8 @@
 import { Box, Flex, Button } from "@chakra-ui/react";
 import React from "react";
 import { matchPath, useLocation, useNavigate } from "react-router-dom";
-import type { RouteModule } from "../../type";
+import { RouteContext } from "../../context/RouteContext";
+import type { RouteModule, SubModule } from "../../type";
 
 export interface Props {
     routeModule: RouteModule | null;
@@ -23,6 +24,8 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
     const [isOpened, setIsOpened] = React.useState(false);
     const [controlledRouteModule, setControlledRouteModule] = React.useState(routeModule);
     const [container, setContainer] = React.useState<HTMLDivElement | null>(null);
+    // TODO/ add name to breadcrumb
+    const { setCurrentModule } = React.useContext(RouteContext);
     const location = useLocation();
     const navigate = useNavigate();
     const width = container?.scrollWidth;
@@ -35,6 +38,17 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
 
     const isLocationMatched = (path: string) => {
         return matchPath(path, location.pathname) !== null;
+    };
+
+    const onRouteClick = (module: SubModule) => {
+        setCurrentModule({
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- checked
+            icon: controlledRouteModule!.icon,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- checked
+            moduleName: controlledRouteModule!.name,
+            routeName: module.name,
+        });
+        navigate(module.path);
     };
 
     React.useEffect(() => {
@@ -85,12 +99,14 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
                                 backgroundColor: "#2A7857",
                                 color: "#91CEB5",
                             }}
+                            marginBottom="2px"
+                            width="100%"
                             display="block"
                             color="#9CC9B7"
                             variant="ghost"
                             key={_.name}
                             whiteSpace="nowrap"
-                            onClick={() => navigate(_.path)}
+                            onClick={() => onRouteClick(_)}
                         >
                             {_.name}
                         </Button>
