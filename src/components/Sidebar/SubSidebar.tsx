@@ -1,4 +1,4 @@
-import { Box, Flex, Button } from "@chakra-ui/react";
+import { Box, Flex, Button, Badge } from "@chakra-ui/react";
 import React from "react";
 import { matchPath, useLocation, useNavigate } from "react-router-dom";
 import { RouteContext } from "../../context/RouteContext";
@@ -6,6 +6,7 @@ import type { RouteModule, SubModule } from "../../type";
 
 export interface Props {
     routeModule: RouteModule | null;
+    badges?: Record<string, number>;
 }
 
 /**
@@ -18,7 +19,7 @@ export interface Props {
  * 1. starts the animation
  * 2. clear the cloned sub-modules
  */
-export const SubSidebar = React.memo(({ routeModule }: Props) => {
+export const SubSidebar = React.memo(({ routeModule, badges }: Props) => {
     // Animating used to track when user fast double click the menu, it will breaks the animation
     const [isAnimating, setIsAnimating] = React.useState(false);
     const [isOpened, setIsOpened] = React.useState(false);
@@ -49,6 +50,26 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
             routeName: module.name,
         });
         navigate(module.path);
+    };
+
+    const renderBadge = (module: SubModule) => {
+        const badgeValue = badges?.[module.path];
+        if (badgeValue !== undefined) {
+            return (
+                <Badge
+                    borderRadius="10rem"
+                    paddingY="2px"
+                    paddingX="10px"
+                    backgroundColor="#91CEB5"
+                    color="#06603b"
+                    size="lg"
+                >
+                    {badgeValue}
+                </Badge>
+            );
+        }
+
+        return null;
     };
 
     React.useEffect(() => {
@@ -88,7 +109,7 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
                     <Box as="h2" color="#9CC9B7" paddingY="10px">
                         {controlledRouteModule?.name}
                     </Box>
-                    {controlledRouteModule?.subModules.map((_) => (
+                    {controlledRouteModule?.subModules?.map((_) => (
                         <Button
                             isActive={isLocationMatched(_.path)}
                             _hover={{
@@ -101,7 +122,9 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
                             }}
                             marginBottom="2px"
                             width="100%"
-                            display="block"
+                            display="flex"
+                            justifyContent="space-between"
+                            columnGap="30px"
                             color="#9CC9B7"
                             variant="ghost"
                             key={_.name}
@@ -109,6 +132,7 @@ export const SubSidebar = React.memo(({ routeModule }: Props) => {
                             onClick={() => onRouteClick(_)}
                         >
                             {_.name}
+                            {renderBadge(_)}
                         </Button>
                     ))}
                 </Box>

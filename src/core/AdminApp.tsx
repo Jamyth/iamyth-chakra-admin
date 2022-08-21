@@ -9,11 +9,19 @@ import type { RouteModule, SubModule } from "../type";
 import type { RouteContextType, RouteInformation } from "../context/RouteContext";
 import type { HeaderChildrenContextType } from "../context/HeaderChildrenContext";
 
-export interface AdminAppWithReactRouterProps {
+export interface AdminAppBaseProps {
+    /**
+     * Match with url and notification number
+     * create badges
+     */
+    badges?: Record<string, number>;
+}
+
+export interface AdminAppWithReactRouterProps extends AdminAppBaseProps {
     routeConfig: (RouteModule | SubModule)[];
 }
 
-export interface AdminAppWithoutReactRouterProps {
+export interface AdminAppWithoutReactRouterProps extends AdminAppBaseProps {
     children: React.ReactNode;
 }
 
@@ -21,6 +29,7 @@ export function AdminApp(props: AdminAppWithoutReactRouterProps): JSX.Element;
 export function AdminApp(props: AdminAppWithReactRouterProps): JSX.Element;
 // eslint-disable-next-line react/function-component-definition -- Function Overloading
 export function AdminApp(props: AdminAppWithReactRouterProps | AdminAppWithoutReactRouterProps): JSX.Element {
+    const { badges } = props;
     // TODO/Jamyth Added Header, SideBar, Footer
 
     const [currentModule, setCurrentModule] = React.useState<RouteInformation | null>(null);
@@ -50,7 +59,7 @@ export function AdminApp(props: AdminAppWithReactRouterProps | AdminAppWithoutRe
                     <HeaderChildrenContext.Provider value={headerChildrenContextValue}>
                         <BrowserRouter>
                             <Flex minHeight={height}>
-                                <SideBar modules={routeConfig} />
+                                <SideBar modules={routeConfig} badges={badges} />
                                 <Box flex="1">
                                     <Header />
                                     <Routes>

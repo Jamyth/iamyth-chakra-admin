@@ -8,9 +8,10 @@ import type { RouteModule, SubModule } from "../../type";
 export interface SidebarProps {
     modules: (RouteModule | SubModule)[];
     logo?: string;
+    badges?: Record<string, number>;
 }
 
-export const SideBar = React.memo(({ modules, logo }: SidebarProps) => {
+export const SideBar = React.memo(({ modules, logo, badges }: SidebarProps) => {
     const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
     const { setCurrentModule } = React.useContext(RouteContext);
 
@@ -68,7 +69,7 @@ export const SideBar = React.memo(({ modules, logo }: SidebarProps) => {
                 </Box>
                 <Box>OMG</Box>
             </Flex>
-            <SubSidebar routeModule={selectedModule} />
+            <SubSidebar routeModule={selectedModule} badges={badges} />
         </React.Fragment>
     );
 });

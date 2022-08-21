@@ -3,6 +3,10 @@ import ReactDOM from "react-dom/client";
 import { AdminApp } from "@iamyth/chakra-admin";
 import type { RouteModule, SubModule } from "@iamyth/chakra-admin";
 
+const badges = {
+    "/sub-module-3": 10,
+};
+
 const routeConfig: (RouteModule | SubModule)[] = [
     {
         name: "Hello",
@@ -75,4 +79,4 @@ const routeConfig: (RouteModule | SubModule)[] = [
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- defined
 const element = document.getElementById("app")!;
 const root = ReactDOM.createRoot(element);
-root.render(<AdminApp routeConfig={routeConfig} />);
+root.render(<AdminApp routeConfig={routeConfig} badges={badges} />);
