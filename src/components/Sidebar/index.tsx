@@ -41,6 +41,8 @@ export const SideBar = React.memo(({ modules, logo, badges }: SidebarProps) => {
                 justifyContent="space-between"
                 width={`${SIDEBAR_WIDTH}px`}
                 p="16px"
+                position="sticky"
+                top="0"
             >
                 <Box>
                     {logo && <Box />}

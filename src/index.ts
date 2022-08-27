@@ -2,3 +2,4 @@
 export * from "./core/AdminApp";
 export * from "./components/Header";
 export * from "./type";
+export * from "./hooks/useHeaderChildren";

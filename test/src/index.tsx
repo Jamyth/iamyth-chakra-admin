@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { AdminApp } from "@iamyth/chakra-admin";
+import { AdminApp, useHeaderChildren } from "@iamyth/chakra-admin";
 import type { RouteModule, SubModule } from "@iamyth/chakra-admin";
 
 const badges = {
@@ -13,7 +13,10 @@ const routeConfig: (RouteModule | SubModule)[] = [
         icon: "OMG",
         subModules: [
             {
-                component: () => null,
+                component: () => {
+                    useHeaderChildren(<h1>omg</h1>);
+                    return <div />;
+                },
                 path: "/sub-module-1",
                 name: "Sub Module 1 ",
                 icon: "Test",

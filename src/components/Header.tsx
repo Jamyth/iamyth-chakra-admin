@@ -17,7 +17,7 @@ export const Header = React.memo((props: HeaderProps) => {
         <Box as="header">
             <Container paddingX="24px" flexDirection="column" maxWidth={maxWidth} display="flex" alignItems="center">
                 <Breadcrumb />
-                <Flex width="100%" alignItems="space-between">
+                <Flex width="100%" justifyContent="space-between">
                     <Heading fontSize="3xl">{routeName}</Heading>
                     {children}
                 </Flex>
